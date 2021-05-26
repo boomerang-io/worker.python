@@ -1,7 +1,7 @@
 FROM python:3.9.5
 
-WORKDIR /usr/src/app
+WORKDIR /usr/src
 
-COPY . .
+COPY ./pyworker ./pyworker
 
 ENTRYPOINT ["python3", "-m", "pyworker"]
