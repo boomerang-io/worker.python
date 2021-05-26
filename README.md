@@ -35,23 +35,33 @@ TBD
 
 1. Create a virtual environment. To create a new virtual environment, decide upon a directory where you want to place it, and run the `venv` module as a script with the directory path. We recommend naming directory `.venv`, since it is also ignored by git through `.gitignore` rules.
 
-    `python3 -m venv .venv`
+    ```sh
+    python3 -m venv .venv
+    ```
 
 2. Once you’ve created a virtual environment, you may activate it.
 
-    `source .venv/bin/activate`
+    ```sh
+    source .venv/bin/activate
+    ```
 
 3. After activating the virtual environment, you can run the `pyworker` module.
 
-    `python3 -m pyworker`
+    ```sh
+    python3 -m pyworker
+    ```
 
 4. To leave the virtual environment, simply deactivate it.
 
-    `deactivate`
+    ```sh
+    deactivate
+    ```
 
 5. You may also want to delete the created virtual environment to free up space on your disk.
 
-    `rm -r .venv`
+    ```sh
+    rm -r .venv
+    ```
 
 ### How to run locally with Python
 
@@ -63,7 +73,9 @@ TBD
 
 1. Run the `pyworker` module.
 
-    `python3 -m pyworker`
+    ```sh
+    python3 -m pyworker
+    ```
 
 ## Test
 
@@ -85,7 +97,9 @@ To start a new build and/or deploy activity in CICD, create a new tag trigger, t
 
 Build a new Docker image.
 
-    `docker build --tag flow-python-worker:0.0.1 .`
+```sh
+docker build --tag flow-python-worker:0.0.1 .
+```
 
 ## Licence
 
