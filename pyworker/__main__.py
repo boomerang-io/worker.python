@@ -1,4 +1,4 @@
-from flow_tools import TaskUtils
+from .flow_tools import TaskUtils
 
 
 def main():

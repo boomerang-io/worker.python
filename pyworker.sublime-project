@@ -1,0 +1,21 @@
+{
+	"build_systems":
+	[
+		{
+			"file_regex": "^[ ]*File \"(...*?)\", line ([0-9]*)",
+			"name": "Python Worker Project",
+			"working_dir": "$project_path",
+			"shell_cmd": "[ -f \".venv/bin/python3\" ] && .venv/bin/python3 -m pyworker || python3 -m pyworker",
+		}
+	],
+	"folders":
+	[
+		{
+			"path": ".",
+		}
+	],
+	"settings":
+	{
+		"python_interpreter": "[ -f \".venv/bin/python3\" ] && .venv/bin/python3 || python3",
+	},
+}
