@@ -1,7 +1,7 @@
 import os
 import sys
 
-from flow_utils import TaskUtils
+from .flow_utils import TaskUtils
 
 
 def main():
