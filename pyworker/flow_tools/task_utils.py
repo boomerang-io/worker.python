@@ -1,6 +1,9 @@
+import os.path
+
+from . import _constants as constants
+
 
 class _task_utils_meta(type):
-
     def __init__(cls, *args, **kwargs):
         cls._input_properties = None
 
@@ -10,6 +13,13 @@ class _task_utils_meta(type):
         # Lazy instantiation
         if cls._input_properties is not None:
             return cls._input_properties
+
+        # Get the first available file where task input properties are stored
+        input_file_path = next((file_path
+                                for file_path in constants.TASK_INPUT_FILES
+                                if os.path.isfile(file_path)), None)
+
+        print(input_file_path)
 
         cls._input_properties = {}
 
