@@ -1,0 +1,4 @@
+pythonVersion=Python 3 (version 3.9.5)
+pythonPackages=my_package\=6.94.20\nsome_odd_package\=1.2.3
+pythonScript=print("This is a python script\!")\nprint("This is another print\!")\n\nreturn "All good\!"\n
+pythonArguments=--value\="What a value"

@@ -1,0 +1,7 @@
+pythonVersion=Python 2 (version 2.7.16) 
+pythonPackages= 
+# This is a comment
+
+pythonScript=def my_sum(a, b)\:\n\treturn a + b\n\nprint(my_sum(3, 39))\n\nreturn my_sum(69, 420)\n 
+pythonArguments= 
+key_with_comment=Value # Comment
