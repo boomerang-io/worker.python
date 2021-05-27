@@ -28,8 +28,8 @@ TBD
 
 #### Prerequisites for virtual environment
 
-- Python 3
-- Pip
+- Python 3.6 or higher
+- Pip 19.0 or higher
 
 #### Steps to run in virtual environment
 
@@ -67,7 +67,7 @@ TBD
 
 #### Prerequisites for local environment
 
-- Python 3
+- Python 3.6 or higher
 
 #### Steps to run in local environment
 

@@ -1,3 +1,3 @@
-from .task_utils import TaskUtils
+from .properties_manager import PropertiesManager
 
-__all__ = ["TaskUtils"]
+__all__ = ["PropertiesManager"]
