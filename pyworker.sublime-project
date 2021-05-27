@@ -3,16 +3,13 @@
 	[
 		{
 			"file_regex": "^[ ]*File \"(...*?)\", line ([0-9]*)",
-			"name": "PyWorker Project (venv)",
+			"name": "PyWorker Project",
 			"working_dir": "$project_path",
-			"shell_cmd": ".venv/bin/python3 -m pyworker",
-		},
-		{
-			"file_regex": "^[ ]*File \"(...*?)\", line ([0-9]*)",
-			"name": "PyWorker Project (python3)",
-			"working_dir": "$project_path",
-			"shell_cmd": "python3 -m pyworker",
-		},
+			"cmd": ["python3", "-m", "pyworker"],
+			"env": {
+				"PATH": ".venv/bin:$PATH",
+			},
+		}
 	],
 	"folders":
 	[
@@ -23,6 +20,6 @@
 	"settings":
 	{
 		"python_interpreter": ".venv/bin/python3",
-		"auto_python_builder_enabled": false
+		"auto_python_builder_enabled": false,
 	},
 }
