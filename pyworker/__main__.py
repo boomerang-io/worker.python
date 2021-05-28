@@ -2,6 +2,7 @@ import logging
 import argparse
 
 from .flow_tools import PropertiesManager
+from .logger_conf import LoggerConf
 
 # Constants
 DEV_INPUT_FILE_PATH = "./dev.input"
@@ -15,8 +16,8 @@ INPUT_ARGUMENTS_KEY = "pythonArguments"
 
 def main():
     # Configure logger
-    logging.basicConfig()
-    logger = logging.getLogger(__name__)
+    LoggerConf.configure()
+    logger = LoggerConf.loggerForModule(__name__)
     logger.setLevel(logging.WARNING)
 
     # Create command line argument parser and add program supported arguments
@@ -45,10 +46,10 @@ def main():
         input_props = PropertiesManager.shared.task_input_properties
 
     logger.info("Input properties:")
-    logger.info(f"Python Version: {input_props.get(INPUT_VERSION_KEY)}")
-    logger.info(f"Python Packages:\n{input_props.get(INPUT_PACKAGES_KEY)}")
-    logger.info(f"Python Arguments: {input_props.get(INPUT_ARGUMENTS_KEY)}")
-    logger.info(f"Python Script:\n{input_props.get(INPUT_SCRIPT_KEY)}")
+    logger.info(f"🔢 Python Version: {input_props.get(INPUT_VERSION_KEY)}")
+    logger.info(f"📦 Python Packages:\n{input_props.get(INPUT_PACKAGES_KEY)}")
+    logger.info(f"📣 Python Arguments: {input_props.get(INPUT_ARGUMENTS_KEY)}")
+    logger.info(f"🚀 Python Script:\n{input_props.get(INPUT_SCRIPT_KEY)}")
 
     # print(os.system("echo $PATH"))
 

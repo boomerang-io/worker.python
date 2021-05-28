@@ -46,8 +46,8 @@ class PropertiesManager(object, metaclass=_propertiesManagerSingleton):
         self._task_input_properties = properties
         return self._task_input_properties
 
-    @staticmethod
-    def propertiesFromFile(file_path: str) -> dict:
+    @classmethod
+    def propertiesFromFile(cls, file_path: str) -> dict:
         with open(file_path, "r", encoding="utf-8") as file:
             return {
                 key: value
