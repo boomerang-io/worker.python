@@ -1,4 +1,5 @@
 import os.path
+import logging
 import javaproperties
 
 from . import _constants as constants
@@ -15,20 +16,25 @@ class _propertiesManagerSingleton(type):
         return cls.__shared
 
     @property
-    def shared(cls):
+    def shared(cls) -> "class":
         return cls()
 
 
 class PropertiesManager(object, metaclass=_propertiesManagerSingleton):
+
+    logger = logging.getLogger(__name__)
+
     def __init__(self):
         self._task_input_properties = None
 
     @property
     def task_input_properties(self):
 
-        # Lazy instantiation
+        # Lazy instantiation if the property has not yet been created
         if self._task_input_properties is not None:
             return self._task_input_properties
+
+        self.logger.debug("Lazy instantiate `task_input_properties`")
 
         # Default task input properties
         properties = {}
@@ -48,6 +54,9 @@ class PropertiesManager(object, metaclass=_propertiesManagerSingleton):
 
     @classmethod
     def propertiesFromFile(cls, file_path: str) -> dict:
+
+        cls.logger.debug(f"Read properties from file: {file_path}")
+
         with open(file_path, "r", encoding="utf-8") as file:
             return {
                 key: value
