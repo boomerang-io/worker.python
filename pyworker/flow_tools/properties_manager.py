@@ -6,16 +6,16 @@ from . import _constants as constants
 
 class _propertiesManagerSingleton(type):
 
-    __shared_instance = None
+    __shared = None
 
     def __call__(cls, *args, **kwargs):
-        if cls.__shared_instance is None:
-            cls.__shared_instance = super(_propertiesManagerSingleton,
-                                          cls).__call__(*args, **kwargs)
-        return cls.__shared_instance
+        if cls.__shared is None:
+            cls.__shared = super(_propertiesManagerSingleton,
+                                 cls).__call__(*args, **kwargs)
+        return cls.__shared
 
     @property
-    def shared_instance(cls):
+    def shared(cls):
         return cls()
 
 
