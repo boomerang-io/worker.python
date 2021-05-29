@@ -3,6 +3,7 @@ import argparse
 
 from . import logger_conf
 from .flow_tools import PropertiesManager
+from .script_runner import PythonScriptRunner
 
 # Constants
 # DEV_INPUT_FILE_PATH = "./tests/input_props_test1.txt"
@@ -44,12 +45,14 @@ def main():
         input_props = PropertiesManager.shared.task_input_properties
 
     logger.info("Input properties:")
-    logger.info(f"🔢 Python Version: {input_props.get(INPUT_VERSION_KEY)}")
-    logger.info(f"📦 Python Packages:\n{input_props.get(INPUT_PACKAGES_KEY)}")
-    logger.info(f"📣 Python Arguments: {input_props.get(INPUT_ARGUMENTS_KEY)}")
-    logger.info(f"🚀 Python Script:\n{input_props.get(INPUT_SCRIPT_KEY)}")
+    logger.info(f"🔢Python Version: {input_props.get(INPUT_VERSION_KEY)}")
+    logger.info(f"📦Python Packages:\n{input_props.get(INPUT_PACKAGES_KEY)}")
+    logger.info(f"📣Python Arguments: {input_props.get(INPUT_ARGUMENTS_KEY)}")
+    logger.info(f"🚀Python Script:\n{input_props.get(INPUT_SCRIPT_KEY)}")
 
     # Check required task input properties
+    if not input_props.get(INPUT_SCRIPT_KEY):
+        raise ValueError("Python script not provided or empty!")
 
     # print(os.system("echo $PATH"))
 
