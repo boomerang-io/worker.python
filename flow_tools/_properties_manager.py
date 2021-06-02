@@ -53,7 +53,7 @@ class PropertiesManager(object, metaclass=_propertiesManagerSingleton):
         return self._task_input_properties
 
     @classmethod
-    def get_properties_from_file(cls, file_path: str) -> dict:
+    def get_properties_from_file(cls, file_path: str) -> dict[str, str]:
 
         cls.logger.debug(f"Read properties from file: {file_path}")
 

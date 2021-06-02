@@ -1,25 +1,15 @@
 import logging
 import argparse
 
-from utils import configureLogging
+from typing import Tuple
+from utils import configure_logging, constants
 from flow_tools import PropertiesManager
 from script_runner import PythonVersion, PythonScriptRunner
 
-# Constants
-# DEV_INPUT_FILE_PATH = "./tests/input_props_test1.txt"
-DEV_INPUT_FILE_PATH = "./io_properties/dev_input.properties"
-DEV_OUTPUT_FILE_PATH = "./io_properties/dev_output.properties"
-
-INPUT_VERSION_KEY = "pythonVersion"
-INPUT_PACKAGES_KEY = "pythonPackages"
-INPUT_SCRIPT_KEY = "pythonScript"
-INPUT_ARGUMENTS_KEY = "pythonArguments"
-
 
 def main():
-    # Configure and get the logger for this module
-    configureLogging()
-    logger = logging.getLogger(__name__)
+    # Configure the logger
+    configure_logging()
 
     # Create command line argument parser and add program supported arguments
     parser = argparse.ArgumentParser()
@@ -42,28 +32,44 @@ def main():
 
     if args.dev_enabled:
         input_props = PropertiesManager.shared.get_properties_from_file(
-            DEV_INPUT_FILE_PATH)
+            constants.DEV_INPUT_FILE_PATH)
     else:
         input_props = PropertiesManager.shared.task_input_properties
 
-    logger.info("Input properties:")
-    logger.info(f"🔢Python Version: {input_props.get(INPUT_VERSION_KEY)}")
-    logger.info(f"📦Python Packages:\n{input_props.get(INPUT_PACKAGES_KEY)}")
-    logger.info(f"📣Python Arguments: {input_props.get(INPUT_ARGUMENTS_KEY)}")
-    logger.info(f"🚀Python Script:\n{input_props.get(INPUT_SCRIPT_KEY)}")
+    # Convert python version from string to python version enum
+    python_version = (PythonVersion.PYTHON_3_9 if "python 2"
+                      in input_props.get(constants.INPUT_VERSION_KEY,
+                                         "") else PythonVersion.PYTHON_2_7)
 
     # Check required task input properties
-    if not input_props.get(INPUT_SCRIPT_KEY):
+    if not input_props.get(constants.INPUT_SCRIPT_KEY):
         raise ValueError("Python script not provided or empty!")
 
-    # Create a new python script runner and execute the script
-    python_version = (PythonVersion.PYTHON_3_9
-                      if "python 2" in input_props.get(INPUT_VERSION_KEY, "")
-                      else PythonVersion.PYTHON_2_7)
-    python_script_runner = PythonScriptRunner(
+    # Run the script
+    result, output = run_script(
         python_version=python_version,
-        script=input_props.get(INPUT_SCRIPT_KEY, ""),
-        cmd_args=input_props.get(INPUT_ARGUMENTS_KEY, ""))
+        additional_packages=input_props.get(constants.INPUT_PACKAGES_KEY, ""),
+        script=input_props.get(constants.INPUT_SCRIPT_KEY, ""),
+        cmd_args=input_props.get(constants.INPUT_ARGUMENTS_KEY, ""))
+
+    # Program execution successful
+    exit(result)
+
+
+def run_script(python_version: PythonVersion, additional_packages: str,
+               script: str, cmd_args: str) -> Tuple[int, str]:
+    logger = logging.getLogger(__name__)
+
+    logger.info("Input properties:")
+    logger.info(f"🔢Python Version: {python_version}")
+    logger.info(f"📦Python Packages:\n{additional_packages}")
+    logger.info(f"📣Python Arguments: {cmd_args}")
+    logger.info(f"🚀Python Script:\n{script}")
+
+    # Create a new python script runner and execute the script
+    python_script_runner = PythonScriptRunner(python_version=python_version,
+                                              script=script,
+                                              cmd_args=cmd_args)
 
     logger.debug("Start python script runner activity...")
 
@@ -100,12 +106,7 @@ def main():
     # with open(fifo_path, "w", encoding="utf-8") as fifo:
     #     fifo.write(py_script_str)
 
-    # Program execution successful
-    exit(0)
-
-
-def run_script():
-    pass
+    return (0, None)
 
 
 if __name__ == "__main__":

@@ -1,7 +1,7 @@
 import logging
 
 
-def configureLogging():
+def configure_logging():
     __custom_level_names = [(logging.DEBUG, "🔬"), (logging.INFO, "💡"),
                             (logging.WARNING, "⚠️"), (logging.ERROR, "🚫"),
                             (logging.CRITICAL, "🧨")]

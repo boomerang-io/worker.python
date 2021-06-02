@@ -1,3 +1,4 @@
-from .logging_conf import configureLogging
+from . import _constants as constants
+from ._logging_conf import configure_logging
 
-__all__ = ["configureLogging"]
+__all__ = ["configure_logging", "constants"]
