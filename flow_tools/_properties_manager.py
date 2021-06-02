@@ -46,14 +46,14 @@ class PropertiesManager(object, metaclass=_propertiesManagerSingleton):
 
         # Read the properties if a file was found
         if input_file_path:
-            properties = self.propertiesFromFile(input_file_path)
+            properties = self.get_properties_from_file(input_file_path)
 
         # Set and return input properties
         self._task_input_properties = properties
         return self._task_input_properties
 
     @classmethod
-    def propertiesFromFile(cls, file_path: str) -> dict:
+    def get_properties_from_file(cls, file_path: str) -> dict:
 
         cls.logger.debug(f"Read properties from file: {file_path}")
 

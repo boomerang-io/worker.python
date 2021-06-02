@@ -5,14 +5,14 @@
 			"file_regex": "^[ ]*File \"(...*?)\", line ([0-9]*)",
 			"name": "PyWorker Project",
 			"working_dir": "$project_path",
-			"cmd": ["python3", "-m", "pyworker"],
+			"cmd": ["python3", "run.py"],
 			"env": {
 				"PATH": ".venv/bin:$PATH",
 			},
 			"variants": [
 				{
 					"name": "Development",
-					"cmd": ["python3", "-m", "pyworker", "--dev"]
+					"cmd": ["python3", "run.py", "--dev"]
 				}
 			]
 		}

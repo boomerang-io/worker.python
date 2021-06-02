@@ -38,7 +38,7 @@ class PythonScriptRunner(ScriptRunner):
         attributes.output = None
 
         # Create script handler thread itself and start its activity
-        script_handler_thread = Thread(target=self.__scriptHandler,
+        script_handler_thread = Thread(target=self.__script_handler,
                                        args=(attributes, ))
         script_handler_thread.start()
 
@@ -69,10 +69,10 @@ class PythonScriptRunner(ScriptRunner):
         return self.__output
 
     @classmethod
-    def __scriptHandler(cls, attributes: SimpleNamespace):
+    def __script_handler(cls, attributes: SimpleNamespace):
         attributes.result = 0
         attributes.output = "ha ha!"
 
     @classmethod
-    def __scriptExecuter(cls):
+    def __script_executer(cls):
         pass

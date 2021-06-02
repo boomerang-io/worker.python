@@ -1,14 +1,14 @@
 import logging
 import argparse
 
-from . import logging_conf
-from .flow_tools import PropertiesManager
-from .script_runner import PythonVersion, PythonScriptRunner
+from utils import configureLogging
+from flow_tools import PropertiesManager
+from script_runner import PythonVersion, PythonScriptRunner
 
 # Constants
 # DEV_INPUT_FILE_PATH = "./tests/input_props_test1.txt"
-DEV_INPUT_FILE_PATH = "./props/dev_input.properties"
-DEV_OUTPUT_FILE_PATH = "./props/dev_output.properties"
+DEV_INPUT_FILE_PATH = "./io_properties/dev_input.properties"
+DEV_OUTPUT_FILE_PATH = "./io_properties/dev_output.properties"
 
 INPUT_VERSION_KEY = "pythonVersion"
 INPUT_PACKAGES_KEY = "pythonPackages"
@@ -17,6 +17,8 @@ INPUT_ARGUMENTS_KEY = "pythonArguments"
 
 
 def main():
+    # Configure and get the logger for this module
+    configureLogging()
     logger = logging.getLogger(__name__)
 
     # Create command line argument parser and add program supported arguments
@@ -39,7 +41,7 @@ def main():
     input_props = None
 
     if args.dev_enabled:
-        input_props = PropertiesManager.shared.propertiesFromFile(
+        input_props = PropertiesManager.shared.get_properties_from_file(
             DEV_INPUT_FILE_PATH)
     else:
         input_props = PropertiesManager.shared.task_input_properties
@@ -100,6 +102,10 @@ def main():
 
     # Program execution successful
     exit(0)
+
+
+def run_script():
+    pass
 
 
 if __name__ == "__main__":
