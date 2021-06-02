@@ -1,9 +1,9 @@
 import logging
 import argparse
 
-from . import logger_conf
+from . import logging_conf
 from .flow_tools import PropertiesManager
-from .script_runner import PythonScriptRunner
+from .script_runner import PythonVersion, PythonScriptRunner
 
 # Constants
 # DEV_INPUT_FILE_PATH = "./tests/input_props_test1.txt"
@@ -53,6 +53,23 @@ def main():
     # Check required task input properties
     if not input_props.get(INPUT_SCRIPT_KEY):
         raise ValueError("Python script not provided or empty!")
+
+    # Create a new python script runner and execute the script
+    python_version = (PythonVersion.PYTHON_3_9
+                      if "python 2" in input_props.get(INPUT_VERSION_KEY, "")
+                      else PythonVersion.PYTHON_2_7)
+    python_script_runner = PythonScriptRunner(
+        python_version=python_version,
+        script=input_props.get(INPUT_SCRIPT_KEY, ""),
+        cmd_args=input_props.get(INPUT_ARGUMENTS_KEY, ""))
+
+    logger.debug("Start python script runner activity...")
+
+    python_script_runner.run()
+
+    logger.info(f"🗳Python script runner result: {python_script_runner.result}")
+    logger.info(
+        f"📝Python script runner output:\n{python_script_runner.output}")
 
     # print(os.system("echo $PATH"))
 

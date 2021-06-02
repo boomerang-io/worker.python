@@ -21,7 +21,7 @@ class ScriptRunner(metaclass=ABCMeta):
 
     @property
     @abstractmethod
-    def output(self) -> int:
+    def output(self) -> str:
         # Get script execution output
         raise NotImplementedError(f"`output` property not implemented in "
                                   f"class {type(self).__name__}!")
