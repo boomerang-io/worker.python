@@ -46,7 +46,7 @@ def main():
         raise ValueError("Python script not provided or empty!")
 
     # Run the script
-    result, output = run_script(
+    result, output = run_script_job(
         python_version=python_version,
         additional_packages=input_props.get(constants.INPUT_PACKAGES_KEY, ""),
         script=input_props.get(constants.INPUT_SCRIPT_KEY, ""),
@@ -56,8 +56,8 @@ def main():
     exit(result)
 
 
-def run_script(python_version: PythonVersion, additional_packages: str,
-               script: str, cmd_args: str) -> Tuple[int, str]:
+def run_script_job(python_version: PythonVersion, additional_packages: str,
+                   script: str, cmd_args: str) -> Tuple[int, str]:
     logger = logging.getLogger(__name__)
 
     logger.info("Input properties:")
@@ -78,33 +78,6 @@ def run_script(python_version: PythonVersion, additional_packages: str,
     logger.info(f"🗳Python script runner result: {python_script_runner.result}")
     logger.info(
         f"📝Python script runner output:\n{python_script_runner.output}")
-
-    # print(os.system("echo $PATH"))
-
-    # print(PropertiesManager())
-    # print(PropertiesManager.shared_instance)
-    # print(PropertiesManager.shared_instance.task_input_properties)
-    # print(PropertiesManager.shared_instance.task_input_properties)
-    # print(PropertiesManager.shared_instance.task_input_properties)
-    # print(PropertiesManager.shared_instance.task_input_properties)
-    # print(f"fere")
-
-    # py_script_str = ("print(\"Hello World2\")\n"
-    #                  "x = 3\n"
-    #                  "y = 7\n"
-    #                  "result = (x + y) ** 2\n"
-    #                  "print(result)\n")
-
-    # fifo_path = "fifo_file"
-
-    # print(os.path.exists(fifo_path))
-
-    # # if stat.S_ISFIFO(os.stat(fifo_path).st_mode):
-    # if not os.path.exists(fifo_path):
-    #     os.mkfifo(fifo_path)
-
-    # with open(fifo_path, "w", encoding="utf-8") as fifo:
-    #     fifo.write(py_script_str)
 
     return (0, None)
 
