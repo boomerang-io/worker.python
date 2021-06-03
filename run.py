@@ -4,7 +4,8 @@ import argparse
 from typing import Tuple
 from utils import configure_logging, constants
 from flow_tools import PropertiesManager
-from script_runner import PythonVersion, PythonScriptRunner
+from script_runner import PythonVersion
+from script_runner import PythonScriptRunner, PipPackageInstaller
 
 
 def main():
@@ -68,15 +69,30 @@ def run_script_job(python_version: PythonVersion,
     logger.info(f"🔢Python Version: {python_version}")
     logger.info(f"📦Python Packages:\n{additional_packages}")
     logger.info(f"📣Python Arguments: {cmd_args}")
-    logger.info(f"🚀Python Script:\n{script}")
+    logger.info(f"🐍Python Script:\n{script}")
+
+    # Create a new pip package installer instance and execute it
+    pip_package_installer = PipPackageInstaller(packages=additional_packages)
+
+    logger.debug("📥Start pip package installer activity...")
+
+    pip_package_installer.run()
+
+    logger.info(
+        f"🗳Pip package installer result: {pip_package_installer.result}")
+    logger.info(
+        f"📝Pip package installer output:\n{pip_package_installer.output}")
+
+    # If pip package installation has failed, exit the function prematurely
+    if pip_package_installer.result != 0:
+        return (pip_package_installer.result, pip_package_installer.output)
 
     # Create a new python script runner and execute the script
     python_script_runner = PythonScriptRunner(python_version=python_version,
                                               script=script,
-                                              cmd_args=cmd_args,
-                                              development=development)
+                                              cmd_args=cmd_args)
 
-    logger.debug("Start python script runner activity...")
+    logger.debug("🐍Start python script runner activity...")
 
     python_script_runner.run()
 
@@ -84,7 +100,7 @@ def run_script_job(python_version: PythonVersion,
     logger.info(
         f"📝Python script runner output:\n{python_script_runner.output}")
 
-    return (0, None)
+    return (python_script_runner.result, python_script_runner.output)
 
 
 if __name__ == "__main__":

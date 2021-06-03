@@ -4,21 +4,14 @@ import threading
 import subprocess
 
 from ._script_runner import ScriptRunner
-from ._python_version import PythonVersion
 
 
-class PythonScriptRunner(ScriptRunner):
+class PipPackageInstaller(ScriptRunner):
 
     logger = logging.getLogger(__name__)
 
-    def __init__(self,
-                 python_version: PythonVersion = PythonVersion.PYTHON_3_9,
-                 script: str = "",
-                 cmd_args: str = ""):
-        self.__py_version = python_version
-        self.__script = script
-        self.__cmd_args = cmd_args
-
+    def __init__(self, packages: str = ""):
+        self.__packages = packages
         self.__result = None
         self.__output = None
 
@@ -34,30 +27,28 @@ class PythonScriptRunner(ScriptRunner):
         # Sanity check
         with self.__lock:
             if self.__status > 0:
-                raise InterruptedError("The script cannot be executed "
-                                       "multiple times!")
+                raise InterruptedError("Pip packages already installed!")
+
             # Set status in progress
             self.__status = 1
 
         try:
-            # Create a temporary file for storing the script
+            # Create a temporary file for storing pip packages
             with tempfile.NamedTemporaryFile("r+") as tmp_file:
 
                 self.logger.debug(f"Temporary file created at: "
                                   f"{tmp_file.name}")
 
-                # Write the script inside the temporary file
-                tmp_file.write(self.__script)
+                # Write pip packages inside the temporary file
+                tmp_file.write(self.__packages)
                 tmp_file.flush()
 
-                self.logger.debug(f"Script has been written to the temporary "
-                                  f"file successfully!")
+                self.logger.debug(f"Pip packages have been written to the "
+                                  f"temporary file successfully!")
 
-                exec_cmd = (f"{self.__py_version.python_executable()} "
-                            f"{tmp_file.name} "
-                            f"{self.__cmd_args}")
+                exec_cmd = f"pip install -r {tmp_file.name}"
 
-                self.logger.debug(f"Executing python script with command: "
+                self.logger.debug(f"Run pip package installer with command: "
                                   f"{exec_cmd}")
 
                 result = subprocess.run(exec_cmd,
