@@ -13,13 +13,23 @@ def main():
     configure_logging()
 
     # Create command line argument parser and add program supported arguments
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(prog="PyWorker")
 
     # Add development mode positional argument
     parser.add_argument("--dev",
                         action="store_true",
                         help="enable development mode",
                         dest="dev_enabled")
+
+    # Add custom provided input properties file argument
+    parser.add_argument("-in",
+                        "--input-properties",
+                        default=None,
+                        type=argparse.FileType("r"),
+                        help=("override program input properties with the "
+                              "properties from the provided %(metavar)s"),
+                        metavar="FILE",
+                        dest="input_properties_file")
 
     # Parse the arguments
     args = parser.parse_args()
@@ -31,11 +41,11 @@ def main():
     # Read flow task input properties
     input_props = None
 
-    if args.dev_enabled:
-        input_props = PropertiesManager.shared.get_properties_from_file(
-            constants.DEV_INPUT_FILE_PATH)
+    if args.input_properties_file:
+        input_props = PropertyManager.shared.get_properties_from_file(
+            args.input_properties_file.name)
     else:
-        input_props = PropertiesManager.shared.task_input_properties
+        input_props = PropertyManager.shared.task_input_properties
 
     # Convert python version from string to python version enum
     python_version = (PythonVersion.PYTHON_2_7 if "python 2"
