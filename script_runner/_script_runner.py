@@ -7,7 +7,7 @@ class ScriptRunner(metaclass=ABCMeta):
                         "instantiated!")
 
     @abstractmethod
-    def run(self):
+    def run(self) -> None:
         # Run the script
         raise NotImplementedError(f"`run` method not implemented in class "
                                   f"{type(self).__name__}!")

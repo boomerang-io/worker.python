@@ -1,10 +1,9 @@
-import os
 import logging
 import tempfile
+import threading
+import subprocess
 
 from pathlib import Path
-from threading import Thread
-from types import SimpleNamespace
 from ._script_runner import ScriptRunner
 from ._python_version import PythonVersion
 
@@ -16,66 +15,91 @@ class PythonScriptRunner(ScriptRunner):
     def __init__(self,
                  python_version: PythonVersion = PythonVersion.PYTHON_3_9,
                  script: str = "",
-                 cmd_args: str = ""):
+                 cmd_args: str = "",
+                 development: bool = False):
         self.__py_version = python_version
         self.__script = script
         self.__cmd_args = cmd_args
 
         self.__result = None
         self.__output = None
-        self.__executed = False
 
-    def run(self):
+        # Status states:
+        # 0 - Not started
+        # 1 - Started, in progress
+        # 2 - Completed
+        self.__status = 0
+        self.__lock = threading.Lock()
+        self.__development = development
+
+    def run(self) -> None:
 
         # Sanity check
-        if self.__executed:
-            raise InterruptedError("The script cannot be executed multiple "
-                                   "times!")
+        with self.__lock:
+            if self.__status > 0:
+                raise InterruptedError("The script cannot be executed "
+                                       "multiple times!")
+            # Set status in progress
+            self.__status = 1
 
-        # First, create the named pipe for python script
-        fifo_path = Path(tempfile.mkdtemp(), "__py_fifo")
-        fifo_path.unlink(missing_ok=True)
-        os.mkfifo(fifo_path)
+        # Create the temporary file for the script
+        tmp_file_path = Path([tempfile.mkdtemp(), "./"][self.__development],
+                             "__py_script")
+        tmp_file_path.unlink(missing_ok=True)
+        tmp_file_path.touch()
 
-        self.logger.debug(f"Named pipe created: {fifo_path}")
+        self.logger.debug(f"Temporary file created at: {tmp_file_path}")
 
-        # Create the output attributes for script writer and executor threads
-        writer_attributes = SimpleNamespace(result=None, output=None)
-        executer_attributes = SimpleNamespace(result=None, output=None)
+        # Write the script inside the temporary file
+        try:
+            with open(tmp_file_path, "w") as file:
+                file.write(self.__script)
 
-        # Create script writer and executor threads and start their activity
-        script_writer_thread = Thread(target=self.__script_writer,
-                                      args=(fifo_path, self.__script,
-                                            writer_attributes))
-        script_executor_thread = Thread(target=self.__script_executer,
-                                        args=(fifo_path, self.__py_version,
-                                              self.__cmd_args,
-                                              executer_attributes))
-        script_writer_thread.start()
-        script_executor_thread.start()
+        except Exception as error:
 
-        # Wait until threads finish their execution
-        script_writer_thread.join()
-        script_executor_thread.join()
+            # An exception has occurred, update result, output and exit
+            # prematurely
+            self.__result = 1
+            self.__output = str(error)
 
-        # Delete the named pipe file
-        fifo_path.unlink()
+            with self.__lock:
+                self.__status = 2
 
-        self.logger.debug(f"Named pipe deleted: {fifo_path}")
+            return
+
+        self.logger.debug(f"Script has been written to the temporary file "
+                          f"successfully!")
+
+        exec_cmd = (f"{self.__py_version.python_executable()} "
+                    f"{tmp_file_path} "
+                    f"{self.__cmd_args}")
+
+        self.logger.debug(f"Executing python script with command: {exec_cmd}")
+
+        result = subprocess.run(exec_cmd,
+                                stdout=subprocess.PIPE,
+                                stderr=subprocess.STDOUT,
+                                shell=True)
+
+        self.logger.debug(f"Sub-process run result:\n{result}")
+
+        # Delete the temporary file
+        tmp_file_path.unlink()
+
+        self.logger.debug(f"Temporary file deleted from: {tmp_file_path}")
 
         # Update script output, result and execution
-        attributes = (writer_attributes if writer_attributes.result != 0 else
-                      executer_attributes)
+        self.__result = result.returncode
+        self.__output = result.stdout
 
-        self.__result = attributes.result
-        self.__output = attributes.output
-        self.__executed = True
+        with self.__lock:
+            self.__status = 2
 
     @property
     def result(self) -> int:
 
         # Sanity check
-        if not self.__executed:
+        if self.__status < 2:
             raise InterruptedError("The result is available once the script "
                                    "execution is completed!")
         return self.__result
@@ -84,37 +108,7 @@ class PythonScriptRunner(ScriptRunner):
     def output(self) -> str:
 
         # Sanity check
-        if not self.__executed:
+        if self.__status < 2:
             raise InterruptedError("The output is available once the script "
                                    "execution is completed!")
         return self.__output
-
-    @classmethod
-    def __script_writer(cls, file_path: Path, script: str,
-                        out_attributes: SimpleNamespace):
-
-        # py_script_str = ("print(\"Hello World2\")\n"
-        #                  "x = 3\n"
-        #                  "y = 7\n"
-        #                  "result = (x + y) ** 2\n"
-        #                  "print(result)\n")
-
-        # fifo_path = "fifo_file"
-
-        # print(os.path.exists(fifo_path))
-
-        # # if stat.S_ISFIFO(os.stat(fifo_path).st_mode):
-        # if not os.path.exists(fifo_path):
-        #     os.mkfifo(fifo_path)
-
-        # with open(fifo_path, "w", encoding="utf-8") as fifo:
-        #     fifo.write(py_script_str)
-
-        out_attributes.result = 0
-        out_attributes.output = "ha ha!"
-
-    @classmethod
-    def __script_executer(cls, file_path: Path, python_version: PythonVersion,
-                          cmd_args: str, out_attributes: SimpleNamespace):
-        out_attributes.result = 0
-        out_attributes.output = "ha ha!"
