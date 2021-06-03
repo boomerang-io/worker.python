@@ -1,6 +1,21 @@
 
-# Created by https://www.toptal.com/developers/gitignore/api/pydev,python,pycharm,pycharm+iml,pycharm+all,visualstudiocode,virtualenv,sublimetext
-# Edit at https://www.toptal.com/developers/gitignore?templates=pydev,python,pycharm,pycharm+iml,pycharm+all,visualstudiocode,virtualenv,sublimetext
+# Created by https://www.toptal.com/developers/gitignore/api/pydev,python,pycharm,virtualenv,pycharm+iml,pycharm+all,sublimetext,visualstudiocode,venv,git
+# Edit at https://www.toptal.com/developers/gitignore?templates=pydev,python,pycharm,virtualenv,pycharm+iml,pycharm+all,sublimetext,visualstudiocode,venv,git
+
+### Git ###
+# Created by git for backups. To disable backups in Git:
+# $ git config --global mergetool.keepBackup false
+*.orig
+
+# Created by git when using merge tools for conflicts
+*.BACKUP.*
+*.BASE.*
+*.LOCAL.*
+*.REMOTE.*
+*_BACKUP_*.txt
+*_BASE_*.txt
+*_LOCAL_*.txt
+*_REMOTE_*.txt
 
 ### PyCharm ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider
@@ -399,7 +414,7 @@ bh_unicode_properties.cache
 # https://packagecontrol.io/packages/sublime-github
 GitHub.sublime-settings
 
-### VirtualEnv ###
+### venv ###
 # Virtualenv
 # http://iamzed.com/2009/05/07/a-primer-on-virtualenv/
 [Bb]in
@@ -411,6 +426,10 @@ GitHub.sublime-settings
 pyvenv.cfg
 .venv
 pip-selfcheck.json
+
+### VirtualEnv ###
+# Virtualenv
+# http://iamzed.com/2009/05/07/a-primer-on-virtualenv/
 
 ### VisualStudioCode ###
 .vscode/*
@@ -425,4 +444,4 @@ pip-selfcheck.json
 .history
 .ionide
 
-# End of https://www.toptal.com/developers/gitignore/api/pydev,python,pycharm,pycharm+iml,pycharm+all,visualstudiocode,virtualenv,sublimetext
+# End of https://www.toptal.com/developers/gitignore/api/pydev,python,pycharm,virtualenv,pycharm+iml,pycharm+all,sublimetext,visualstudiocode,venv,git
