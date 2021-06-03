@@ -1,3 +1,3 @@
-from ._properties_manager import PropertiesManager
+from ._property_manager import PropertyManager
 
-__all__ = ["PropertiesManager"]
+__all__ = ["PropertyManager"]

@@ -5,22 +5,18 @@ import javaproperties
 from . import _constants as constants
 
 
-class _propertiesManagerSingleton(type):
+class _propertyManagerSingleton(type):
 
     __shared = None
 
-    def __call__(cls, *args, **kwargs):
+    @property
+    def shared(cls):
         if cls.__shared is None:
-            cls.__shared = super(_propertiesManagerSingleton,
-                                 cls).__call__(*args, **kwargs)
+            cls.__shared = super(_propertyManagerSingleton, cls).__call__()
         return cls.__shared
 
-    @property
-    def shared(cls) -> "class":
-        return cls()
 
-
-class PropertiesManager(object, metaclass=_propertiesManagerSingleton):
+class PropertyManager(object, metaclass=_propertyManagerSingleton):
 
     logger = logging.getLogger(__name__)
 

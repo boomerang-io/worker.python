@@ -3,7 +3,7 @@ import argparse
 
 from typing import Tuple
 from utils import configure_logging, constants
-from flow_tools import PropertiesManager
+from flow_tools import PropertyManager
 from script_runner import PythonVersion
 from script_runner import PythonScriptRunner, PipPackageInstaller
 
@@ -54,7 +54,7 @@ def main():
         cmd_args=input_props.get(constants.INPUT_ARGUMENTS_KEY, ""),
         development=args.dev_enabled)
 
-    # Program execution successful
+    # Program execution result from script job
     exit(result)
 
 
