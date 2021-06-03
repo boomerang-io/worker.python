@@ -12,7 +12,7 @@
 			"variants": [
 				{
 					"name": "Development",
-					"cmd": ["python3", "run.py", "--input-properties", "./test_properties/test_input5.properties", "--dev"]
+					"cmd": ["python3", "run.py", "--input-properties", "./tests/resources/test_input_5.properties", "--dev"]
 				},
 				{
 					"name": "Run Tests",

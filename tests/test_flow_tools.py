@@ -16,7 +16,7 @@ def test_property_manager_instances():
 
 @pytest.mark.flow_tools
 @mock.patch("flow_tools._property_manager.constants.TASK_INPUT_FILES",
-            ["test_properties/test_input1.properties"])
+            ["tests/resources/test_input_1.properties"])
 def test_task_input_properties1():
     properties = PropertyManager().task_input_properties
 
@@ -29,7 +29,7 @@ def test_task_input_properties1():
 
 @pytest.mark.flow_tools
 @mock.patch("flow_tools._property_manager.constants.TASK_INPUT_FILES",
-            ["test_properties/test_input2.properties"])
+            ["tests/resources/test_input_2.properties"])
 def test_task_input_properties2():
     properties = PropertyManager().task_input_properties
 
@@ -41,7 +41,7 @@ def test_task_input_properties2():
 
 @pytest.mark.flow_tools
 @mock.patch("flow_tools._property_manager.constants.TASK_INPUT_FILES",
-            ["test_properties/test_input3.properties"])
+            ["tests/resources/test_input_3.properties"])
 def test_task_input_properties3():
     properties = PropertyManager().task_input_properties
 
@@ -50,7 +50,7 @@ def test_task_input_properties3():
 
 @pytest.mark.flow_tools
 @mock.patch("flow_tools._property_manager.constants.TASK_INPUT_FILES",
-            ["test_properties/test_input4.properties"])
+            ["tests/resources/test_input_4.properties"])
 def test_task_input_properties4():
     properties = PropertyManager().task_input_properties
 
@@ -59,7 +59,7 @@ def test_task_input_properties4():
 
 @pytest.mark.flow_tools
 @mock.patch("flow_tools._property_manager.constants.TASK_INPUT_FILES",
-            ["test_properties/test_input5.properties"])
+            ["tests/resources/test_input_5.properties"])
 def test_task_input_properties5():
     properties = PropertyManager().task_input_properties
 
@@ -79,7 +79,7 @@ def test_task_input_properties5():
 @pytest.mark.flow_tools
 def test_properties_from_file1():
     properties = PropertyManager.shared.get_properties_from_file(
-        "test_properties/test_input2.properties")
+        "tests/resources/test_input_2.properties")
 
     assert len(properties) == 3
 
@@ -91,7 +91,7 @@ def test_properties_from_file1():
 @pytest.mark.flow_tools
 def test_properties_from_file2():
     properties = PropertyManager.shared.get_properties_from_file(
-        "test_properties/test_input5.properties")
+        "tests/resources/test_input_5.properties")
 
     assert len(properties) == 4
 
