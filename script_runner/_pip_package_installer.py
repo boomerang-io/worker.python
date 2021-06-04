@@ -54,7 +54,8 @@ class PipPackageInstaller(ScriptRunner):
                 result = subprocess.run(exec_cmd,
                                         stdout=subprocess.PIPE,
                                         stderr=subprocess.STDOUT,
-                                        shell=True)
+                                        shell=True,
+                                        text=True)
 
                 self.logger.debug(f"Sub-process run result:\n{result}")
 
