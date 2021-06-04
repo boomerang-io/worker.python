@@ -5,9 +5,13 @@ from flow_tools import PropertyManager
 
 
 @pytest.mark.flow_tools
-def test_property_manager_instances():
+def test_property_manager_instances_1():
     inst1 = PropertyManager()
     inst2 = PropertyManager()
+
+    print(inst1)
+    print(inst2)
+    print(PropertyManager.shared)
 
     assert inst1 is not inst2
     assert PropertyManager.shared is PropertyManager.shared
@@ -17,8 +21,10 @@ def test_property_manager_instances():
 @pytest.mark.flow_tools
 @mock.patch("flow_tools._property_manager.constants.TASK_INPUT_FILES",
             ["tests/resources/test_input_1.properties"])
-def test_task_input_properties1():
+def test_task_input_properties_1():
     properties = PropertyManager().task_input_properties
+
+    print(properties)
 
     assert len(properties) == 4
     assert "pythonVersion" in properties
@@ -30,8 +36,10 @@ def test_task_input_properties1():
 @pytest.mark.flow_tools
 @mock.patch("flow_tools._property_manager.constants.TASK_INPUT_FILES",
             ["tests/resources/test_input_2.properties"])
-def test_task_input_properties2():
+def test_task_input_properties_2():
     properties = PropertyManager().task_input_properties
+
+    print(properties)
 
     assert len(properties) == 3
     assert "pythonVersion" in properties
@@ -42,8 +50,10 @@ def test_task_input_properties2():
 @pytest.mark.flow_tools
 @mock.patch("flow_tools._property_manager.constants.TASK_INPUT_FILES",
             ["tests/resources/test_input_3.properties"])
-def test_task_input_properties3():
+def test_task_input_properties_3():
     properties = PropertyManager().task_input_properties
+
+    print(properties)
 
     assert len(properties) == 0
 
@@ -51,8 +61,10 @@ def test_task_input_properties3():
 @pytest.mark.flow_tools
 @mock.patch("flow_tools._property_manager.constants.TASK_INPUT_FILES",
             ["tests/resources/test_input_4.properties"])
-def test_task_input_properties4():
+def test_task_input_properties_4():
     properties = PropertyManager().task_input_properties
+
+    print(properties)
 
     assert len(properties) == 0
 
@@ -60,8 +72,10 @@ def test_task_input_properties4():
 @pytest.mark.flow_tools
 @mock.patch("flow_tools._property_manager.constants.TASK_INPUT_FILES",
             ["tests/resources/test_input_5.properties"])
-def test_task_input_properties5():
+def test_task_input_properties_5():
     properties = PropertyManager().task_input_properties
+
+    print(properties)
 
     assert len(properties) == 4
     assert "key_with_comment" not in properties
@@ -77,9 +91,25 @@ def test_task_input_properties5():
 
 
 @pytest.mark.flow_tools
-def test_properties_from_file1():
+@mock.patch("flow_tools._property_manager.constants.TASK_INPUT_FILES", [
+    "tests/resources/test_input_3.properties",
+    "tests/resources/test_input_1.properties",
+    "tests/resources/test_input_5.properties"
+])
+def test_task_input_properties_order_1():
+    properties = PropertyManager().task_input_properties
+
+    print(properties)
+
+    assert len(properties) == 0
+
+
+@pytest.mark.flow_tools
+def test_properties_from_file_1():
     properties = PropertyManager.shared.get_properties_from_file(
         "tests/resources/test_input_2.properties")
+
+    print(properties)
 
     assert len(properties) == 3
 
@@ -89,9 +119,11 @@ def test_properties_from_file1():
 
 
 @pytest.mark.flow_tools
-def test_properties_from_file2():
+def test_properties_from_file_2():
     properties = PropertyManager.shared.get_properties_from_file(
         "tests/resources/test_input_5.properties")
+
+    print(properties)
 
     assert len(properties) == 4
 
