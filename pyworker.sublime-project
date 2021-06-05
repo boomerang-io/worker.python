@@ -17,6 +17,10 @@
 				{
 					"name": "Run Tests",
 					"cmd": ["pytest"]
+				},
+				{
+					"name": "Flake8 Lint",
+					"cmd": ["flake8", ".", "--count", "--exit-zero", "--max-complexity=10", "--max-line-length=80", "--exclude=.git,.github,.venv,__pycache__,tests/resources", "--statistics"]
 				}
 			]
 		}

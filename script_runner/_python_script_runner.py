@@ -43,15 +43,15 @@ class PythonScriptRunner(ScriptRunner):
             # Create a temporary file for storing the script
             with tempfile.NamedTemporaryFile("r+") as tmp_file:
 
-                self.logger.debug(f"Temporary file created at: "
+                self.logger.debug("Temporary file created at: "
                                   f"{tmp_file.name}")
 
                 # Write the script inside the temporary file
                 tmp_file.write(self.__script)
                 tmp_file.flush()
 
-                self.logger.debug(f"Script has been written to the temporary "
-                                  f"file successfully!")
+                self.logger.debug("Script has been written to the temporary "
+                                  "file successfully!")
 
                 exec_cmd = (f"{self.__py_version.python_executable()} "
                             f"{tmp_file.name} "

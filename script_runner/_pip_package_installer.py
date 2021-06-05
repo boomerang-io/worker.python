@@ -43,8 +43,8 @@ class PipPackageInstaller(ScriptRunner):
                 tmp_file.write(self.__packages)
                 tmp_file.flush()
 
-                self.logger.debug(f"Pip packages have been written to the "
-                                  f"temporary file successfully!")
+                self.logger.debug("Pip packages have been written to the "
+                                  "temporary file successfully!")
 
                 exec_cmd = f"pip install -r {tmp_file.name}"
 
