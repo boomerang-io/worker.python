@@ -44,11 +44,15 @@ class Solution:
 # Get algorithm input from command line arguments (if any)
 print(f"Command line arguments: {sys.argv}")
 
-if len(sys.argv) > 1:
-    algo_input = sys.argv[-1]
-else:
-    algo_input = "RLLGGLRGLGLLLGRLRLRLRRRRLRLGRLLLGGL"
+# Default inputs
+inputs = ["RLLGGLRGLGLLLGRLRLRLRRRRLRLGRLLLGGL"]
 
-# Execute the algorithm
-algo_output = Solution().isRobotBounded(algo_input)
-print(f"Input: {algo_input}\nOutput: {algo_output}")
+# Get inputs from command line arguments
+if len(sys.argv) > 1:
+    inputs = sys.argv[1:]
+
+# Execute the algorithm for each input
+for input in inputs:
+
+    output = Solution().isRobotBounded(input)
+    print(f"Input: {input}\nOutput: {output}")

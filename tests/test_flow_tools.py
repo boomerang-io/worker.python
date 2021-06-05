@@ -92,6 +92,8 @@ def test_task_input_properties_5():
 
 @pytest.mark.flow_tools
 @mock.patch("flow_tools._property_manager.constants.TASK_INPUT_FILES", [
+    "tests/resources/inexisting_file.properties",
+    "tests/resources/also_inexistent.txt",
     "tests/resources/test_input_3.properties",
     "tests/resources/test_input_1.properties",
     "tests/resources/test_input_5.properties"

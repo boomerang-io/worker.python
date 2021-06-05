@@ -173,6 +173,59 @@ def test_failed_result_2():
 
 
 @pytest.mark.python_script_runner
+@pytest.mark.parametrize(
+    "test_script_path, python_version, cmd_args, output_chunks",
+    [("./tests/resources/test_script_1.py", PythonVersion.PYTHON_3_9, [
+        "RLRLR", "LRLRLG", "RLGLRGL", "RLGLRLGLGRL", "LGRLGLRLGRL",
+        "GLRGLRLGRL", "RLRLRGGGGRLRLGGGGGLRLLRRRRR"
+    ], [
+        "Input: RLRLR\nOutput: True", "Input: LRLRLG\nOutput: True",
+        "Input: RLGLRGL\nOutput: True", "Input: RLGLRLGLGRL\nOutput: True",
+        "Input: LGRLGLRLGRL\nOutput: True", "Input: GLRGLRLGRL\nOutput: True",
+        "Input: RLRLRGGGGRLRLGGGGGLRLLRRRRR\nOutput: False"
+    ]),
+     ("./tests/resources/test_script_2.py", PythonVersion.PYTHON_3_9, [
+         "3223", "32", "1", "2", "324", "4543", "0", "0", "47387",
+         "1904013849", "4913749810057985710938190580198",
+         "57923017350913750275829838257924"
+     ], [
+         "Input: ('3223', '32')\nOutput: 103136",
+         "Input: ('1', '2')\nOutput: 2",
+         "Input: ('324', '4543')\nOutput: 1471932",
+         "Input: ('0', '0')\nOutput: 0",
+         "Input: ('47387', '1904013849')\nOutput: 90225504262563",
+         ("Input: ('4913749810057985710938190580198', "
+          "'57923017350913750275829838257924')\nOutput: "
+          "284619215506037851085024197545984067341747764757162215130988952")
+     ]),
+     ("./tests/resources/test_script_3.py", PythonVersion.PYTHON_2_7,
+      ["0", "1", "2", "4", "7", "11", "18", "22", "28", "31", "32"], [
+          "Input: 0\nOutput: 0", "Input: 1\nOutput: 1", "Input: 2\nOutput: 1",
+          "Input: 4\nOutput: 3", "Input: 7\nOutput: 13",
+          "Input: 11\nOutput: 89", "Input: 18\nOutput: 2584",
+          "Input: 22\nOutput: 17711", "Input: 28\nOutput: 317811",
+          "Input: 31\nOutput: 1346269", "Input: 32\nOutput: 2178309"
+      ])])
+def test_long_running_script_1(test_script_path, python_version, cmd_args,
+                               output_chunks):
+    with open(test_script_path, "r") as file:
+        script = file.read()
+
+        python_script_runner = PythonScriptRunner(
+            python_version=python_version,
+            script=script,
+            cmd_args=" ".join(cmd_args))
+        python_script_runner.run()
+
+        print(test_script_path, python_version, cmd_args, output_chunks)
+        print(script)
+        print(python_script_runner.output, python_script_runner.result)
+
+        assert all(output_chunk in python_script_runner.output
+                   for output_chunk in output_chunks)
+
+
+@pytest.mark.python_script_runner
 def test_script_python_version_1():
     python_script_runner = PythonScriptRunner(
         python_version=PythonVersion.PYTHON_3_9,
