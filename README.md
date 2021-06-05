@@ -1,5 +1,8 @@
 # Python Flow Worker
 
+![Testing (pytest) and linting (Flake8)](https://github.com/corcoja/worker.python/actions/workflows/python-app.yml/badge.svg)
+![CodeQL Analysis](https://github.com/corcoja/worker.python/actions/workflows/codeql-analysis.yml/badge.svg)
+
 ## Table of Contents
 
 - [Python Flow Worker](#python-flow-worker)
