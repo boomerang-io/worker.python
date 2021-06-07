@@ -1,7 +1,17 @@
 FROM python:3.9.5
 
-WORKDIR /usr/src
+# Set working directory
+WORKDIR /usr/src/pyworker
 
-COPY ./pyworker ./pyworker
+# Copy required resources
+COPY ./flow_tools ./flow_tools
+COPY ./script_runner ./script_runner
+COPY ./utils ./utils
+COPY ./run.py .
+COPY ./requirements.txt .
 
-ENTRYPOINT ["python3", "-m", "pyworker"]
+# Install pip dependencies
+RUN pip install -r requirements.txt
+
+# Run the script in development mode
+ENTRYPOINT ["sh", "-c", "python3 run.py --dev"]
