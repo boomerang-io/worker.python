@@ -101,7 +101,7 @@ To start a new build and/or deploy activity in CICD, create a new tag trigger, t
 Build a new Docker image.
 
 ```sh
-docker build --tag flow-python-worker:0.0.1 .
+docker build --tag worker-python:0.0.1 .
 ```
 
 ## Licence
