@@ -1,3 +1,4 @@
+import os
 import logging
 import argparse
 
@@ -6,6 +7,8 @@ from utils import configure_logging, constants
 from flow_tools import PropertyManager
 from script_runner import PythonVersion
 from script_runner import PythonScriptRunner, PipPackageInstaller
+
+logger = logging.getLogger(__name__)
 
 
 def main():
@@ -64,6 +67,32 @@ def main():
         cmd_args=input_props.get(constants.INPUT_ARGUMENTS_KEY, ""),
         development=args.dev_enabled)
 
+    # Temporary: subject to be changed to a more generic form
+    # Limit the file size to 4096 bytes
+    output_file_path = input_props.get(constants.INPUT_OUTPUT_FILE_PATH_KEY,
+                                       "").strip()
+
+    # In case output file path was not provided
+    if not output_file_path:
+        output_file_path = "/tekton/results/output"
+
+    # Create folder hierarchy
+    os.makedirs(os.path.dirname(output_file_path), exist_ok=True)
+
+    logger.debug(f"Creating output file at: {output_file_path}")
+
+    try:
+        # Write output content to file
+        with open(output_file_path, "w") as file:
+            file.write(output)
+
+            logger.debug(f"Script output successfully written at: "
+                         f"{output_file_path}")
+    except Exception as error:
+
+        logger.error(f"Could not write output to file: {output_file_path}")
+        logger.error(error, exc_info=True)
+
     # Program execution result from script job
     exit(result)
 
@@ -73,7 +102,6 @@ def run_script_job(python_version: PythonVersion,
                    script: str,
                    cmd_args: str,
                    development: bool = False) -> Tuple[int, str]:
-    logger = logging.getLogger(__name__)
 
     logger.info("Input properties:")
     logger.info(f"🔢Python Version: {python_version}")
