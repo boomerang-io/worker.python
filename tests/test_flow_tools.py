@@ -77,7 +77,7 @@ def test_task_input_properties_5():
 
     print(properties)
 
-    assert len(properties) == 4
+    assert len(properties) == 5
     assert "key_with_comment" not in properties
     assert "pythonVersion" in properties
     assert "pythonPackages" in properties
@@ -127,7 +127,7 @@ def test_properties_from_file_2():
 
     print(properties)
 
-    assert len(properties) == 4
+    assert len(properties) == 5
 
     assert properties["pythonVersion"] == "Python 3 (version 3.9.5) "
     assert properties["pythonArguments"] == ("LLRLLGGGLLRGLLGRLLRGLGGLRGLLLRLR"
