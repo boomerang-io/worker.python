@@ -1,4 +1,4 @@
-FROM python:3.9.5
+FROM python:3.9.13
 
 # Set working directory
 WORKDIR /usr/src/pyworker
